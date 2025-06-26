@@ -145,7 +145,7 @@ async function onEditSubmit() {
       <el-form-item label="Middle Initial" prop="middleInitial">
         <el-input
           v-model="editStudentInfo.middleInitial"
-          :maxlength="2"
+          :maxlength="3"
           :minlength="1"
           placeholder="Middle Inital"
           clearable

@@ -10,11 +10,12 @@ const router = useRouter()
 const formRef = ref()
 const authStore = useAuthenticationStore()
 const { handleLogin } = authStore
+const isLoading = ref(false)
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 async function onSubmit() {
-  if (!formRef.value) {
-    return
-  }
+  if (!formRef.value) return
+  isLoading.value = true
 
   try {
     const valid = await formRef.value.validate()
@@ -34,6 +35,8 @@ async function onSubmit() {
       authStore.admin.username === storedAdmin.username &&
       authStore.admin.password === storedAdmin.password
     ) {
+      await wait(1000)
+
       handleLogin()
       await router.push('/studentList')
       ElMessage.success('Login successful')
@@ -42,6 +45,8 @@ async function onSubmit() {
     }
   } catch (error) {
     console.log('Validation failed:', error)
+  } finally {
+    isLoading.value = false
   }
 }
 
@@ -85,8 +90,14 @@ onMounted(() => {
         />
       </el-form-item>
 
-      <el-button class="login-button" type="primary" size="default" @click="onSubmit"
-        >Login</el-button
+      <el-button
+        class="login-button"
+        type="primary"
+        size="default"
+        :loading="isLoading"
+        :disabled="isLoading"
+        @click="onSubmit"
+        >{{ isLoading ? 'Logging in...' : 'Login' }}</el-button
       >
       <router-link to="/forgotpassword" class="forgot-password"> Forgot password? </router-link>
     </el-form>

@@ -150,7 +150,7 @@ async function resetPassword() {
 .forgot-password-container {
   text-align: center;
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   box-sizing: border-box;
 }
 

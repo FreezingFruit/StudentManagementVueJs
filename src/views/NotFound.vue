@@ -11,8 +11,6 @@ import router from '../router/index';
       <div class="router-link">
         <router-link to="/">Go back</router-link>
       </div>
-
-      <button class="hidden-button">HI HAHAAHHAHA</button>
     </div>
   </div>
 </template>

@@ -39,6 +39,10 @@ function calculateAge(birthDate: string): number {
   if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
     age--
   }
+
+  if (age < 17 && age > 0) {
+    ElMessage.warning('Age should be atleast 17 years old')
+  }
   return age
 }
 
@@ -122,8 +126,9 @@ async function onSubmit() {
       <el-form-item label="Middle Initial" prop="middleInitial">
         <el-input
           v-model="studentStore.studentInfo.middleInitial"
-          maxlength="2"
-          placeholder="Enter your middle initial"
+          :minlength="1"
+          :maxlength="3"
+          placeholder="Enter your middle initial (type 'NA' if unavailable)"
           clearable
         ></el-input>
       </el-form-item>

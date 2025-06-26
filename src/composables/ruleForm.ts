@@ -2,8 +2,18 @@ import type { FormRules } from 'element-plus'
 import { ref } from 'vue'
 
 const namePattern = /^[A-Za-z\s'-]+$/
-const middleInitialPattern = /^[A-Za-z]{1,2}$/
+const middleInitialPattern = /^[A-Za-z]{1,3}$/
 const newPassword = ref('')
+
+const validateCollegeAge = (_rule: unknown, value: number, callback: (error: Error) => void) => {
+  if (!value) {
+    callback(new Error('Age is required'))
+  } else if (value < 17) {
+    callback(new Error('Minimum age is 17'))
+  } else if (value > 100) {
+    callback(new Error('Invalid Age'))
+  } else callback(new Error())
+}
 
 export const studentFormRules: FormRules = {
   firstName: [
@@ -13,7 +23,7 @@ export const studentFormRules: FormRules = {
   ],
   middleInitial: [
     { required: true, message: 'Ex. T. IG', trigger: 'blur' },
-    { min: 1, max: 2, message: 'Length maximum is 2', trigger: 'blur' },
+    { min: 1, max: 3, message: 'Length maximum is 2', trigger: 'blur' },
     { pattern: middleInitialPattern, message: 'Numbers are invalid inputs', trigger: 'blur' },
   ],
   lastName: [
@@ -25,6 +35,7 @@ export const studentFormRules: FormRules = {
   age: [
     { required: true, message: 'Please input age', trigger: 'blur' },
     { required: true, type: 'number', message: 'Age must be a number', trigger: 'blur' },
+    { validator: validateCollegeAge, trigger: 'blur' },
   ],
   address: [
     { required: true, message: 'Please input address', trigger: 'blur' },
