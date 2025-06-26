@@ -9,7 +9,7 @@ A web application made with VueJS and Typescript for managing student informatio
 - **Register Students**: Allows student information to be registered with personal information and courses
 - **View Students**: Displays all registered students in an organized card View
 - **Edit Students**: Tap any student card to modify their information
-- **Delete Studetns**: Press and hold any card to delete their information
+- **Delete Students**: Press and hold any card to delete their information
 
 ### Search and Filter
 
