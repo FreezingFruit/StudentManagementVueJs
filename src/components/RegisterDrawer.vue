@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { ref, watch, nextTick } from 'vue'
+import { ref, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import { useStudentStore } from '@/stores/register.ts'
 import { ElMessage } from 'element-plus'
 import type { Student } from '../types/studentInterface'
 import { Courses } from '@/constants/courses'
 import { studentFormRules } from '../composables/ruleForm'
+import { capitalize } from '@/composables/capitalize'
 
 interface Props {
   modelValue: boolean
@@ -21,11 +22,66 @@ interface Emits {
 defineProps<Props>()
 const emit = defineEmits<Emits>()
 
+const isMobile = ref(window.innerWidth <= 768)
+
 const studentStore = useStudentStore()
 const formRef = ref()
 const isLoading = ref(false)
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+watch(
+  () => studentStore.studentInfo.firstName,
+  (newValue) => {
+    if (newValue) {
+      studentStore.studentInfo.firstName = capitalize(newValue)
+    }
+  },
+)
+
+watch(
+  () => studentStore.studentInfo.lastName,
+  (newValue) => {
+    if (newValue) {
+      studentStore.studentInfo.lastName = capitalize(newValue)
+    }
+  },
+)
+
+watch(
+  () => studentStore.studentInfo.middleInitial,
+  (newValue) => {
+    if (newValue) {
+      studentStore.studentInfo.middleInitial = newValue.toUpperCase()
+    }
+  },
+)
+
+watch(
+  () => studentStore.studentInfo.address,
+  (newValue) => {
+    if (newValue) {
+      studentStore.studentInfo.address = newValue.toUpperCase()
+    }
+  },
+)
+
+const closeDrawer = () => {
+  emit('update:modelValue', false)
+}
+
+//Mobile resizing
+function updateIsMobile() {
+  isMobile.value = window.innerWidth <= 768
+}
+
+onMounted(() => {
+  window.addEventListener('resize', updateIsMobile)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateIsMobile)
+})
 
 function calculateAge(birthDate: string): number {
   if (!birthDate) return 0
@@ -105,7 +161,10 @@ async function onSubmit() {
     @update:model-value="emit('update:modelValue', $event)"
     title="Register"
     :with-header="false"
+    :size="isMobile ? '100%' : '40%'"
+    direction="rtl"
   >
+    <button class="close-button" @click="closeDrawer" aria-label="Close drawer">×</button>
     <span><h2>Register</h2></span>
 
     <el-form
@@ -195,6 +254,30 @@ async function onSubmit() {
 <style scoped>
 .el-drawer__body {
   padding: 24px;
+}
+
+.close-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #606266;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.close-button:hover {
+  box-shadow: 0 0 10px black;
 }
 
 .el-form {

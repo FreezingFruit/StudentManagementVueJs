@@ -5,14 +5,17 @@ const namePattern = /^[A-Za-z\s'-]+$/
 const middleInitialPattern = /^[A-Za-z]{1,3}$/
 const newPassword = ref('')
 
-const validateCollegeAge = (_rule: unknown, value: number, callback: (error: Error) => void) => {
+const validateCollegeAge = (_rule: unknown, value: number, callback: (error?: Error) => void) => {
   if (!value) {
-    callback(new Error('Age is required'))
-  } else if (value < 17) {
-    callback(new Error('Minimum age is 17'))
-  } else if (value > 100) {
-    callback(new Error('Invalid Age'))
-  } else callback(new Error())
+    return callback(new Error('Age is required'))
+  }
+  if (value < 17) {
+    return callback(new Error('Minimum age is 17'))
+  }
+  if (value > 100) {
+    return callback(new Error('Invalid Age'))
+  }
+  callback()
 }
 
 export const studentFormRules: FormRules = {

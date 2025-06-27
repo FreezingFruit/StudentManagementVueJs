@@ -4,6 +4,8 @@ A web application made with VueJS and Typescript for managing student informatio
 
 ## Features
 
+### Admin
+
 ### Student Management
 
 - **Register Students**: Allows student information to be registered with personal information and courses

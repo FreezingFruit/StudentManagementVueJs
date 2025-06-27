@@ -8,6 +8,7 @@ import EditDrawer from '@/components/EditDrawer.vue'
 import type { Student } from '../types/studentInterface'
 import { Courses } from '@/constants/courses'
 import { Avatar } from '@element-plus/icons-vue'
+import { ElIcon } from 'element-plus'
 
 const emit = defineEmits<{
   studentRegistered: [student: Student]
@@ -163,6 +164,12 @@ function openRegistration() {
   drawerRegister.value = true
 }
 
+function resetFilters() {
+  selectedCourseFilter.value = ''
+  ageFilter.value = ''
+  searchQuery.value = ''
+}
+
 onMounted(() => {
   loadStudents()
 })
@@ -268,6 +275,16 @@ defineExpose({
                 <el-option label="36-50" value="36-50" />
                 <el-option label="50+" value="50-100" />
               </el-select>
+
+              <!-- Add Reset Button -->
+              <el-button
+                type="danger"
+                icon="Refresh"
+                @click="resetFilters"
+                class="reset-filter-btn"
+              >
+                Reset Filters
+              </el-button>
             </div>
           </el-collapse-transition>
 
@@ -760,6 +777,25 @@ defineExpose({
     width: 95%;
     height: 40px;
     font-size: 12px;
+  }
+}
+
+.reset-filter-btn {
+  min-width: 140px;
+  height: 32px;
+}
+
+@media (max-width: 768px) {
+  .reset-filter-btn {
+    min-width: 120px;
+    width: 100%;
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reset-filter-btn {
+    min-width: 100%;
   }
 }
 </style>
